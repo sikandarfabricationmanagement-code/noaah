@@ -85,7 +85,7 @@ export function ContactForm() {
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormMessage>{state.errors?.name}</FormMessage>
+              <FormMessage>{state.errors?.name?.[0]}</FormMessage>
             </FormItem>
           )}
         />
@@ -98,7 +98,7 @@ export function ContactForm() {
               <FormControl>
                 <Input type="email" placeholder="john.doe@example.com" {...field} />
               </FormControl>
-               <FormMessage>{state.errors?.email}</FormMessage>
+               <FormMessage>{state.errors?.email?.[0]}</FormMessage>
             </FormItem>
           )}
         />
@@ -111,7 +111,7 @@ export function ContactForm() {
               <FormControl>
                 <Input type="tel" placeholder="(123) 456-7890" {...field} />
               </FormControl>
-               <FormMessage>{state.errors?.phone}</FormMessage>
+               <FormMessage>{state.errors?.phone?.[0]}</FormMessage>
             </FormItem>
           )}
         />
@@ -128,7 +128,7 @@ export function ContactForm() {
                   {...field}
                 />
               </FormControl>
-               <FormMessage>{state.errors?.message}</FormMessage>
+               <FormMessage>{state.errors?.message?.[0]}</FormMessage>
             </FormItem>
           )}
         />

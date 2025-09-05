@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
-import { Menu, X } from 'lucide-react';
+import { Download, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Sheet,
@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/sheet"
 
 const navLinks = [
+  { href: '#home', label: 'Home' },
   { href: '#about', label: 'About Us' },
   { href: '#products', label: 'Products' },
   { href: '#features', label: 'Features' },
-  { href: '#certifications', label: 'Certifications' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#certificate', label: 'Certificate' },
+  { href: '#contact', label: 'Contact Us' },
 ];
 
 export default function Header() {
@@ -45,7 +46,7 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <Logo />
           </Link>
-          <nav className="hidden md:flex md:items-center md:space-x-8">
+          <nav className="hidden lg:flex lg:items-center lg:space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -56,34 +57,40 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <div className="p-4">
-                <Link href="/" className="mb-8 inline-block">
-                  <Logo />
-                </Link>
-                <nav className="flex flex-col space-y-4">
-                  {navLinks.map((link) => (
-                    <SheetTrigger asChild key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-lg font-medium text-foreground transition-colors hover:text-primary"
-                      >
-                        {link.label}
-                      </Link>
-                    </SheetTrigger>
-                  ))}
-                </nav>
-                </div>
-              </SheetContent>
-            </Sheet>
+          <div className="flex items-center gap-4">
+             <Button className="hidden sm:flex">
+              <Download className="mr-2 h-4 w-4" />
+              Download Brochure
+            </Button>
+            <div className="lg:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="bg-background">
+                  <div className="p-4">
+                  <Link href="/" className="mb-8 inline-block">
+                    <Logo />
+                  </Link>
+                  <nav className="flex flex-col space-y-4">
+                    {navLinks.map((link) => (
+                      <SheetTrigger asChild key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="text-lg font-medium text-foreground transition-colors hover:text-primary"
+                        >
+                          {link.label}
+                        </Link>
+                      </SheetTrigger>
+                    ))}
+                  </nav>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </div>
