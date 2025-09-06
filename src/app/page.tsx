@@ -134,7 +134,7 @@ function HeroSection() {
         className="object-cover"
         priority
       />
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-4">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl font-headline">
           Quality uPVC Profiles for Windows & Doors
@@ -143,7 +143,7 @@ function HeroSection() {
           Noaah specializes in the manufacturing of high-quality uPVC profiles, offering durability, style, and energy efficiency for fabricators.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg" variant="outline" className="border-primary bg-primary/10 text-primary-foreground hover:bg-primary/20 backdrop-blur-sm">
+          <Button asChild size="lg" variant="outline" className="border-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground backdrop-blur-sm">
             <a href="#contact">Contact Us</a>
           </Button>
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -170,7 +170,7 @@ function AboutUsSection() {
             />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl font-headline">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">
               Our Mission: Innovation in Every Profile
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
@@ -194,7 +194,7 @@ function ProductsShowcase() {
     <section id="products" className="py-16 sm:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl font-headline">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">
             Explore Our Product Range
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -203,7 +203,7 @@ function ProductsShowcase() {
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <Card key={product.title} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 bg-secondary border-border">
+            <Card key={product.title} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 bg-card border-border">
               <div className="relative h-56 w-full">
                 <Image
                   src={product.image.src}
@@ -214,7 +214,7 @@ function ProductsShowcase() {
                 />
               </div>
               <CardHeader>
-                <CardTitle className="font-headline text-primary-foreground">{product.title}</CardTitle>
+                <CardTitle className="font-headline text-foreground">{product.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-1 flex-col">
                 <p className="text-muted-foreground flex-1">{product.description}</p>
@@ -240,7 +240,7 @@ function FeaturesPreview() {
     <section id="features" className="py-16 sm:py-24 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl font-headline">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">
             Uncompromising Quality & Performance
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -253,7 +253,7 @@ function FeaturesPreview() {
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <feature.icon className="h-7 w-7" />
               </div>
-              <h3 className="text-lg font-semibold text-primary-foreground">{feature.title}</h3>
+              <h3 className="text-lg font-semibold text-foreground">{feature.title}</h3>
               <p className="mt-2 text-muted-foreground">{feature.description}</p>
             </div>
           ))}
@@ -268,7 +268,7 @@ function CertificationsSection() {
     <section id="certificate" className="py-16 sm:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl font-headline">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">
             Certified Excellence
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -279,7 +279,7 @@ function CertificationsSection() {
           {certifications.map((cert) => (
             <div key={cert.name} className="flex flex-col items-center text-center">
               <cert.icon className="h-12 w-12 text-primary" />
-              <p className="mt-4 font-semibold text-primary-foreground">{cert.name}</p>
+              <p className="mt-4 font-semibold text-foreground">{cert.name}</p>
               <p className="text-sm text-muted-foreground">{cert.description}</p>
             </div>
           ))}
@@ -295,26 +295,26 @@ function ContactSection() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-24">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl font-headline">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl font-headline">
               Get in Touch
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
               Have a question or need a quote for your project? Our team of experts is here to help. Contact us today to discuss your requirements.
             </p>
             <div className="mt-8 space-y-4">
-              <a href="mailto:sales@noaah.com" className="flex items-center gap-4 text-lg text-muted-foreground hover:text-primary-foreground transition-colors">
+              <a href="mailto:sales@noaah.com" className="flex items-center gap-4 text-lg text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-6 w-6 text-primary" />
                 <span>sales@noaah.com</span>
               </a>
-              <a href="tel:+1234567890" className="flex items-center gap-4 text-lg text-muted-foreground hover:text-primary-foreground transition-colors">
+              <a href="tel:+1234567890" className="flex items-center gap-4 text-lg text-muted-foreground hover:text-primary transition-colors">
                 <Phone className="h-6 w-6 text-primary" />
                 <span>+1 (234) 567-890</span>
               </a>
             </div>
           </div>
-          <Card className="p-6 sm:p-8 shadow-xl bg-background border-border">
+          <Card className="p-6 sm:p-8 shadow-xl bg-card border-border">
             <CardHeader className="p-0 pb-6">
-              <CardTitle className="text-primary-foreground">Send us a message</CardTitle>
+              <CardTitle className="text-foreground">Send us a message</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <ContactForm />

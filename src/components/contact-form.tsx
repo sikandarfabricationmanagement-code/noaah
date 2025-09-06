@@ -52,6 +52,7 @@ export function ContactForm() {
       phone: '',
       message: '',
     },
+    context: state,
   });
   
   useEffect(() => {
@@ -63,15 +64,31 @@ export function ContactForm() {
         });
         form.reset();
         formRef.current?.reset();
-      } else {
-        toast({
-          title: "Error",
-          description: state.message,
-          variant: 'destructive',
-        });
+      } else if (state.message && !state.success) {
+        // We only want to show a toast for global errors, not field-specific ones.
+        if (!state.errors) {
+            toast({
+              title: "Error",
+              description: state.message,
+              variant: 'destructive',
+            });
+        }
       }
     }
   }, [state, toast, form]);
+
+  useEffect(() => {
+    if (state.errors) {
+      Object.entries(state.errors).forEach(([name, errors]) => {
+        if (errors) {
+          form.setError(name as keyof z.infer<typeof contactFormSchema>, {
+            type: 'manual',
+            message: errors[0],
+          });
+        }
+      });
+    }
+  }, [state.errors, form]);
 
   return (
     <Form {...form}>
@@ -85,7 +102,7 @@ export function ContactForm() {
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormMessage>{state.errors?.name?.[0]}</FormMessage>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -98,7 +115,7 @@ export function ContactForm() {
               <FormControl>
                 <Input type="email" placeholder="john.doe@example.com" {...field} />
               </FormControl>
-               <FormMessage>{state.errors?.email?.[0]}</FormMessage>
+               <FormMessage />
             </FormItem>
           )}
         />
@@ -111,7 +128,7 @@ export function ContactForm() {
               <FormControl>
                 <Input type="tel" placeholder="(123) 456-7890" {...field} />
               </FormControl>
-               <FormMessage>{state.errors?.phone?.[0]}</FormMessage>
+               <FormMessage />
             </FormItem>
           )}
         />
@@ -128,7 +145,7 @@ export function ContactForm() {
                   {...field}
                 />
               </FormControl>
-               <FormMessage>{state.errors?.message?.[0]}</FormMessage>
+               <FormMessage />
             </FormItem>
           )}
         />

@@ -51,7 +51,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+                className={cn("text-sm font-medium transition-colors hover:text-primary", isScrolled ? 'text-foreground/80' : 'text-primary-foreground/80')}
               >
                 {link.label}
               </Link>
@@ -65,7 +65,7 @@ export default function Header() {
             <div className="lg:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className={cn(isScrolled ? '' : 'text-primary-foreground hover:bg-white/10 hover:text-primary-foreground')}>
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
