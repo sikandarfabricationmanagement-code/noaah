@@ -1,16 +1,11 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
-import { Inter } from 'next/font/google';
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-});
+import type {Metadata} from 'next';
+import './globals.css';
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Noaah - Quality uPVC Profiles for Windows & Doors',
-  description: 'Noaah specializes in the manufacturing of high-quality uPVC profiles, offering durability, style, and energy efficiency for fabricators.',
+  title: 'Noaah uPVC',
+  description: 'High-Quality uPVC Profiles for Windows and Doors',
 };
 
 export default function RootLayout({
@@ -19,8 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-body antialiased`}>
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      </head>
+      <body className="font-body antialiased">
         {children}
         <Toaster />
       </body>

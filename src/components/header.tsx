@@ -1,98 +1,97 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/components/logo';
 import { Download, Menu } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState } from 'react';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
+import { Logo } from './logo';
 
 const navLinks = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About Us' },
-  { href: '#products', label: 'Products' },
-  { href: '#features', label: 'Features' },
-  { href: '#certificate', label: 'Certificate' },
-  { href: '#contact', label: 'Contact Us' },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/products", label: "Products" },
+  { href: "/features", label: "Features" },
+  { href: "/certificates", label: "Certificate" },
+  { href: "/infrastructure", label: "Infrastructure" },
+  { href: "/contact", label: "Contact Us" },
 ];
 
-export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
-        isScrolled ? 'bg-background/80 backdrop-blur-sm shadow-md' : 'bg-transparent'
-      )}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <Logo />
-          </Link>
-          <nav className="hidden lg:flex lg:items-center lg:space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn("text-sm font-medium transition-colors hover:text-primary", isScrolled ? 'text-foreground/80' : 'text-primary-foreground/80')}
-              >
+    <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <Link href="/" className="flex items-center gap-3 font-bold text-3xl text-primary">
+          <Logo className="h-16 w-16" />
+          Noaah
+        </Link>
+        
+        <nav className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <Button variant="ghost" asChild key={link.href}>
+              <Link href={link.href} className="relative group">
                 {link.label}
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center"></span>
               </Link>
-            ))}
-          </nav>
-          <div className="flex items-center gap-4">
-             <Button className="hidden sm:flex">
-              <Download className="mr-2 h-4 w-4" />
-              Download Brochure
             </Button>
-            <div className="lg:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className={cn(isScrolled ? '' : 'text-primary-foreground hover:bg-white/10 hover:text-primary-foreground')}>
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="bg-background">
-                  <div className="p-4">
-                  <Link href="/" className="mb-8 inline-block">
-                    <Logo />
-                  </Link>
-                  <nav className="flex flex-col space-y-4">
-                    {navLinks.map((link) => (
-                      <SheetTrigger asChild key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="text-lg font-medium text-foreground transition-colors hover:text-primary"
-                        >
-                          {link.label}
-                        </Link>
-                      </SheetTrigger>
-                    ))}
-                  </nav>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
+          ))}
+        </nav>
+
+        <div className="hidden lg:flex items-center gap-2">
+            <Button asChild>
+                <Link href="/Brochure.pdf" target="_blank" rel="noopener noreferrer">
+                <Download className="mr-2 h-4 w-4" />
+                Download Brochure
+
+              
+                </Link>
+            </Button>
         </div>
+
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <SheetTrigger asChild className="lg:hidden">
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between border-b pb-4">
+                <Link href="/" className="flex items-center gap-3 font-bold text-3xl text-primary" onClick={() => setIsMenuOpen(false)}>
+                  <Logo className="h-16 w-16" />
+                  Noaah
+                </Link>
+              </div>
+              <nav className="flex flex-col gap-4 py-6">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+              <div className="mt-auto">
+                <Button className="w-full" asChild>
+                    <Link href="/Brochure.pdf" target="_blank" rel="noopener noreferrer">
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Brochure
+                    </Link>
+                </Button>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );

@@ -1,54 +1,38 @@
-import { Logo } from '@/components/logo';
-import { Twitter, Linkedin, Facebook } from 'lucide-react';
-import Link from 'next/link';
+"use client";
 
-export default function Footer() {
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { Logo } from './logo';
+
+export function Footer() {
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    // This check is to prevent a hydration mismatch.
+    // The server will render the initial state, and the client will update it after mounting.
+    if (currentYear !== new Date().getFullYear()) {
+      setCurrentYear(new Date().getFullYear());
+    }
+  }, [currentYear]);
+
   return (
-    <footer className="bg-background text-secondary-foreground">
-      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          <div>
-            <Logo />
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              Leading the future of uPVC technology for sustainable and modern living.
+    <footer className="border-t bg-card">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-6 px-4 py-8 sm:flex-row">
+        <Link href="/" className="flex items-center gap-3 font-bold text-3xl text-primary">
+          <Logo className="h-16 w-16" />
+          Noaah
+        </Link>
+        <div className='text-center'>
+            <p className='font-semibold'>Noaah Tech Private Limited.</p>
+            <p className="text-sm text-muted-foreground">
+            &copy; {currentYear} All rights reserved.
             </p>
-          </div>
-          <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            <div>
-              <h3 className="font-semibold text-foreground">Products</h3>
-              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#products" className="hover:text-primary">uPVC Profiles</Link></li>
-                <li><Link href="#products" className="hover:text-primary">Windows</Link></li>
-                <li><Link href="#products" className="hover:text-primary">Doors</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Company</h3>
-              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#about" className="hover:text-primary">About Us</Link></li>
-                <li><Link href="#contact" className="hover:text-primary">Contact</Link></li>
-                <li><Link href="#certificate" className="hover:text-primary">Certifications</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Connect</h3>
-              <div className="mt-4 flex space-x-4 text-muted-foreground">
-                <Link href="#" aria-label="Twitter" className="hover:text-primary">
-                  <Twitter className="h-5 w-5" />
-                </Link>
-                <Link href="#" aria-label="LinkedIn" className="hover:text-primary">
-                  <Linkedin className="h-5 w-5" />
-                </Link>
-                <Link href="#" aria-label="Facebook" className="hover:text-primary">
-                  <Facebook className="h-5 w-5" />
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
-        <div className="mt-8 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Noaah. All rights reserved.</p>
-        </div>
+        <nav className="flex gap-4">
+          <Link href="http://www.noaahtechprofile.com" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            www.noaahtechprofile.com
+          </Link>
+        </nav>
       </div>
     </footer>
   );

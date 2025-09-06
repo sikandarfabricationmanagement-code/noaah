@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,144 +12,141 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { submitContactForm, type FormState } from '@/app/actions';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { type submitInquiry } from "@/ai/flows/inquiry-flow";
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters.'),
-  email: z.string().email('Please enter a valid email.'),
-  phone: z.string().min(10, 'Please enter a valid phone number.'),
-  message: z.string().min(10, 'Message must be at least 10 characters.'),
+const inquirySchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  phone: z.string().optional(),
+  message: z.string().min(10, {
+    message: "Message must be at least 10 characters.",
+  }).max(500, {
+    message: "Message cannot be longer than 500 characters."
+  }),
 });
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? 'Sending...' : 'Send Message'}
-    </Button>
-  );
-}
 
-export function ContactForm() {
+export function InquiryForm() {
   const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [state, formAction] = useFormState<FormState, FormData>(
-    submitContactForm,
-    { message: '', success: false }
-  );
-
-  const form = useForm<z.infer<typeof contactFormSchema>>({
-    resolver: zodResolver(contactFormSchema),
+  const form = useForm<z.infer<typeof inquirySchema>>({
+    resolver: zodResolver(inquirySchema),
     defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
     },
-    context: state,
   });
-  
-  useEffect(() => {
-    if (state.message) {
-      if (state.success) {
-        toast({
-          title: "Success!",
-          description: state.message,
-        });
-        form.reset();
-        formRef.current?.reset();
-      } else if (state.message && !state.success) {
-        // We only want to show a toast for global errors, not field-specific ones.
-        if (!state.errors) {
-            toast({
-              title: "Error",
-              description: state.message,
-              variant: 'destructive',
-            });
-        }
-      }
-    }
-  }, [state, toast, form]);
 
-  useEffect(() => {
-    if (state.errors) {
-      Object.entries(state.errors).forEach(([name, errors]) => {
-        if (errors) {
-          form.setError(name as keyof z.infer<typeof contactFormSchema>, {
-            type: 'manual',
-            message: errors[0],
-          });
-        }
+  async function onSubmit(values: z.infer<typeof inquirySchema>) {
+    setIsSubmitting(true);
+    try {
+      // In a real app, you would handle form submission here, e.g., send to an API endpoint.
+      const { submitInquiry } = await import('@/ai/flows/inquiry-flow');
+      await submitInquiry(values);
+      
+      toast({
+        title: "Inquiry Sent!",
+        description: "Thank you for your message. We'll be in touch soon.",
       });
+      
+      form.reset();
+    } catch (error) {
+      console.error("Failed to submit inquiry:", error);
+      toast({
+        title: "Submission Failed",
+        description: "Sorry, we couldn't send your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [state.errors, form]);
+  }
 
   return (
-    <Form {...form}>
-      <form ref={formRef} action={formAction} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email Address</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="john.doe@example.com" {...field} />
-              </FormControl>
-               <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input type="tel" placeholder="(123) 456-7890" {...field} />
-              </FormControl>
-               <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Your Message</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us about your project or inquiry..."
-                  className="min-h-[100px]"
-                  {...field}
-                />
-              </FormControl>
-               <FormMessage />
-            </FormItem>
-          )}
-        />
-        <SubmitButton />
-      </form>
-    </Form>
+    <Card className="w-full shadow-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl">Send us a Message</CardTitle>
+        <CardDescription>Fill out the form below and we'll get back to you.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email Address</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="john.doe@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number (Optional)</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your Message</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tell us how we can help you..."
+                      className="resize-none"
+                      rows={4}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Submit Inquiry'}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
