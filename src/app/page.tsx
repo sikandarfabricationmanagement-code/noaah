@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Award, CheckSquare, Factory, ShieldCheck, ThermometerSun, Wind, Waves, VolumeX, Leaf, Building, GanttChartSquare, PackageCheck, Mail, MapPin, Phone, Globe } from 'lucide-react';
-import { InquiryForm } from '@/components/contact-form';
+import { InquiryForm } from '@/components/inquiry-form';
 
 
 export default function Home() {
@@ -89,7 +89,7 @@ export default function Home() {
                 </p>
                 <div className="mt-8 flex justify-center gap-4">
                 <Button size="lg" asChild>
-                    <Link href="/contact">Contact Us</Link>
+                    <Link href="/contacts">Contact Us</Link>
                 </Button>
                 <Button size="lg" variant="secondary" asChild>
                     <Link href="/products">View Profiles</Link>
